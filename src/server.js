@@ -7,8 +7,9 @@ connectDB();
 
 const PORT = env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`\x1b[36m
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`\x1b[36m
   ___             _ _   _       
  |_ _|_ __ __   _(_) |_| | _   _ 
   | || '_ \\\\ \\ / /| | __| | | | |
@@ -21,4 +22,7 @@ app.listen(PORT, () => {
   ► DEVELOPER           : \x1b[35mSalah Uddin Kader & Nextora Studio\x1b[33m
   ► ENGINE              : \x1b[32mAntigravity AI (Pair Programming)\x1b[33m
  ══════════════════════════════════════════════════════════════\x1b[0m`);
-});
+  });
+}
+
+export default app;
