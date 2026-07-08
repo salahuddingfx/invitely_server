@@ -14,10 +14,35 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Request logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    let statusColor = '\x1b[32m'; // Green (2xx)
+    if (res.statusCode >= 300 && res.statusCode < 400) {
+      statusColor = '\x1b[36m'; // Cyan (3xx)
+    } else if (res.statusCode >= 400 && res.statusCode < 500) {
+      statusColor = '\x1b[33m'; // Yellow (4xx)
+    } else if (res.statusCode >= 500) {
+      statusColor = '\x1b[31m'; // Red (5xx)
+    }
+    const resetColor = '\x1b[0m';
+    const methodColor = '\x1b[35m'; // Magenta
+    const pathColor = '\x1b[34m'; // Blue
+    
+    console.log(
+      `[${new Date().toLocaleTimeString()}] ${methodColor}${req.method.padEnd(6)}${resetColor} ${pathColor}${req.originalUrl}${resetColor} ${statusColor}${res.statusCode}${resetColor} (${duration}ms)`
+    );
+  });
+  next();
+});
+
 // Register API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/invitations', invitationRoutes);
 app.use('/api/uploads', uploadRoutes);
+app.use('/api/upload', uploadRoutes); // Fallback for singular endpoint
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
