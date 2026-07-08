@@ -10,6 +10,14 @@ const rsvpSchema = new mongoose.Schema({
   phone: { type: String, default: '' }
 });
 
+const loveStorySchema = new mongoose.Schema({
+  id: { type: String, required: true },
+  title: { type: String, required: true },
+  date: { type: String, default: '' },
+  description: { type: String, default: '' },
+  icon: { type: String, default: '✨' }
+}, { _id: false });
+
 const invitationSchema = new mongoose.Schema({
   title: { type: String, required: true },
   slug: { type: String, required: true, unique: true, index: true },
@@ -28,7 +36,7 @@ const invitationSchema = new mongoose.Schema({
     background: { type: String, required: true },
     text: { type: String, required: true }
   },
-  fontFamily: { type: String, enum: ['playfair', 'cormorant', 'greatvibes', 'sans'], required: true },
+  fontFamily: { type: String, enum: ['playfair', 'cormorant', 'greatvibes', 'sans', 'amiri'], required: true },
   bride: {
     name: { type: String, required: true },
     avatar: { type: String, default: '' },
@@ -42,6 +50,7 @@ const invitationSchema = new mongoose.Schema({
     parentGroomBride: { type: String, default: '' }
   },
   gallery: [{ type: String }],
+  loveStory: [loveStorySchema],
   rsvps: [rsvpSchema],
   ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   viewsCount: { type: Number, default: 0 }
@@ -49,3 +58,4 @@ const invitationSchema = new mongoose.Schema({
 
 const Invitation = mongoose.model('Invitation', invitationSchema);
 export default Invitation;
+
