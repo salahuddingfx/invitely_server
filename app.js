@@ -10,6 +10,7 @@ import invitationRoutes from './routes/invitation.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import settingsRoutes from './routes/settings.routes.js';
 
 const app = express();
 
@@ -66,6 +67,7 @@ app.use('/api/uploads', uploadRoutes);
 app.use('/api/upload', uploadRoutes); // Fallback for singular endpoint
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Health check endpoint
 app.get('/api', (req, res) => {
